@@ -1,0 +1,2840 @@
+{
+  "name": "Helpdesk AI Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "=NEW_ISSUE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "694687e8-15a9-47e3-a3a4-fb3de7a2fe9a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "94e2c2bf-dce8-4f58-9206-0b15ff82a3ec",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "=UPDATE_STATUS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "72605cf2-5b15-4999-ab11-f04ef0467a23",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "UPDATE_ASSIGNEE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c3c9aa66-5645-4dde-b33f-3a9db504fd84",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "UPDATE_PRIORITY",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fdbd0b73-867d-479c-943e-605c08f912f6",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "VIEW_ISSUE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "09284fbd-65f1-4cf0-863c-f5546afbe198",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "LIST_ISSUES",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c489e214-844e-4d53-9f77-7f6f7c369481",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "NORMAL_MESSAGE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "16f90ce5-b14c-4c6c-8768-9b58b41101ec",
+                    "leftValue": "={{ $json.text }}",
+                    "rightValue": "STEPS_TO_REPLICATE",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1648,
+        1024
+      ],
+      "id": "81dd0318-9bcc-4dec-89ac-8dac45711865",
+      "name": "Route Based on Classification"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        -160
+      ],
+      "id": "3597951c-bf8f-4720-9005-cea47fb528f3",
+      "name": "Get Last Key",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the new key from previous node\nconst newKey = $('Get Last Key').first().json.newKey;\n\n// Get extracted data from Ollama node\nconst ollamaOutput = $('Extract Issue Data').first().json;\n\n// Clean the Ollama output by removing Markdown code fences\nlet cleanText = ollamaOutput.text\n  .replace(/```json\\s*/i, '')   // remove ```json (case insensitive)\n  .replace(/```/g, '')          // remove closing ```\n  .trim();\n\nlet extracted;\ntry {\n  // Try to parse cleaned text as JSON\n  extracted = JSON.parse(cleanText);\n} catch (e) {\n  // If parsing still fails, return raw text for debugging\n  return {\n    json: {\n      error: \"Failed to parse Ollama response\",\n      rawResponse: ollamaOutput.text\n    }\n  };\n}\n\n// Get current timestamp (Manila time) in format: MM/DD/YYYY HH:mm:ss AM/PM\nconst now = new Date();\nconst manilaTime = new Date(now.toLocaleString(\"en-US\", { timeZone: \"Asia/Manila\" }));\nconst pad = n => String(n).padStart(2, \"0\");\nlet hours = manilaTime.getHours();\nconst ampm = hours >= 12 ? \"PM\" : \"AM\";\nhours = hours % 12;\nhours = hours ? hours : 12; // 0 should be 12\nconst created = `${pad(manilaTime.getMonth() + 1)}/${pad(manilaTime.getDate())}/${manilaTime.getFullYear()} ${pad(hours)}:${pad(manilaTime.getMinutes())}:${pad(manilaTime.getSeconds())} ${ampm}`;\n\n// Prepare row data (match your sheet columns: A to I)\nreturn {\n  json: {\n    Key: newKey,                                    // A\n    Summary: extracted.summary || \"\",               // B\n    Reporter: extracted.reporter || \"\",             // C\n    Status: \"Open\",                                 // D (default)\n    Assignee: extracted.assignee || \"\",             // E\n    Created: created,                               // F\n    \"Portal Tab\": extracted.portal_tab || \"\",       // G\n    Priority: extracted.priority || \"\",             // H\n    Impact: extracted.impact || \"\"                  // I\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -160
+      ],
+      "id": "ea3282c8-6403-4927-9e64-3716d986353b",
+      "name": "Prepare Sheet Data"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wVGXQwvlAPNWymW23vubEvLnN6SNbB80UptQq1YcUrs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Impact": "={{ $json.Impact }}",
+            "Priority": "={{ $json.Priority }}",
+            "Portal Tab": "={{ $json[\"Portal Tab\"] }}",
+            "Created": "={{ $json.Created }}",
+            "Assignee": "={{ $json.Assignee }}",
+            "Status": "={{ $json.Status }}",
+            "Reporter": "={{ $json.Reporter }}",
+            "Summary": "={{ $json.Summary }}",
+            "Key": "={{ $('Generate New Key').item.json.newKey }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Key",
+              "displayName": "Key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reporter",
+              "displayName": "Reporter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Time ",
+              "displayName": "Created Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Response",
+              "displayName": "1st Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resolved",
+              "displayName": "Resolved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aging",
+              "displayName": "Aging",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Portal Tab",
+              "displayName": "Portal Tab",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Impact",
+              "displayName": "Impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        -160
+      ],
+      "id": "3a6960f7-dc1f-4e17-b171-0d26beac11af",
+      "name": "Append Row",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract bug/issue details from the message below. Return ONLY valid JSON with no additional text, explanation, or markdown.\n\nMessage:\n{{ $('Telegram Bot').item.json.message.text }}\nExtract these fields (use null if field not found):\n- summary: Brief title\n- description: Detailed description\n- reporter: Email or name\n- priority: One of \"Highest\", \"High\", \"Medium\", \"Low\", \"Lowest\" (or null)\n- impact: One of \"Extensive/Widespread\", \"Significant/Large\", \"Moderate/Limited\", \"Minor/Localized\" (or null)\n- portal_tab: One of \"INTERNAL HOME PAGE\", \"Customer Success Tab\", \"Team Management Tab\", \"Job Listings Tab\", \"Active Pool Tab\", \"Recruitment Tab\", \"Careers Page\" (or null)\n- assignee: Person assigned (or null)\n\nCRITICAL: Return ONLY the raw JSON object below with NO markdown, NO code blocks, NO explanations:\n{\"summary\":\"value or null\",\"description\":\"value or null\",\"reporter\":\"value or null\",\"priority\":\"value or null\",\"impact\":\"value or null\",\"portal_tab\":\"value or null\",\"assignee\":\"value or null\"}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -976,
+        -256
+      ],
+      "id": "50dd06b8-7e29-4ce1-82f4-582248cdcb6e",
+      "name": "Extract Issue Data"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a bug tracker assistant. Analyze the following message and classify it into ONE category.\n\nA NEW_ISSUE must contain STRUCTURED data with fields like:\n- Summary: [title]\n- Description: [details]\n- Reporter: [email/name]\nOR clearly state \"I want to report a bug/issue\" with details.\n\nCategories:\n- NEW_ISSUE: ONLY if the message contains structured bug report data (Summary, Description, Reporter fields) OR explicitly states reporting a new bug with details\n- UPDATE_STATUS: if updating status (contains: \"update status\", \"change status\", \"mark as\", with issue key like IN-XXX)\n- UPDATE_ASSIGNEE: if assigning (contains: \"assign\", \"give to\", with issue key)\n- UPDATE_PRIORITY: if changing priority (contains: \"change priority\", \"set priority\", with issue key)\n- VIEW_ISSUE: if requesting details (contains: \"show\", \"view\", \"details\", \"get\", with issue key)\n- LIST_ISSUES: if listing issues (contains: \"list\", \"show all\", \"open issues\")\n- NORMAL_MESSAGE: if asking questions, requesting templates, greetings, or general conversation (NOT reporting an actual issue)\n\nMessage: {{ $json.message.text }}\n\nExamples of NORMAL_MESSAGE:\n- \"Give me the template on how to file an issue\"\n- \"How do I report a bug?\"\n- \"Hello\"\n- \"What's the status of my ticket?\"\n\nExamples of NEW_ISSUE:\n- \"Summary: Login not working\\nDescription: Users can't login\\nReporter: john@example.com\"\n- \"I want to report a bug: The dashboard is broken and shows error 500\"\n\nRespond with ONLY the category name in uppercase, nothing else. No explanations.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -2240,
+        1120
+      ],
+      "id": "7f2752df-1e6c-42cd-bb77-042b88b43122",
+      "name": "Message Classification"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -2608,
+        1120
+      ],
+      "id": "5e6d9d73-90ef-463c-b63a-4e137b5ba11f",
+      "name": "Telegram Bot",
+      "webhookId": "b3ceea6f-b883-48d1-a108-d5c13e977ca1",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a QA analyst. Based on the issue summary and description below, write clear, concise steps to replicate the issue.\n\nSummary: {{ JSON.parse($('Extract Issue Data').first().json.text).summary }}\nDescription: {{ JSON.parse($('Extract Issue Data').first().json.text).description }}\n\nRequirements:\n- Output plain text only (no markdown, no symbols like *, #, or -).\n- Use simple numbered steps (1., 2., 3., etc.).\n- Include only the necessary actions to reproduce the issue.\n- Keep it clear, and specific.\n- Always use (https://internal.codev.com/)\n\nExample format:\n1. Go to the Internal Portal (https://internal.codev.com/)\n2. Submit a leave request and get it approved.\n3. Check the leave credits in the Worksched Portal.\n4. Attempt to sync records.\n\nNow generate the steps to replicate:\n",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -4928,
+        1072
+      ],
+      "id": "ee09652f-15d8-4144-97aa-58e5b6bc3a9f",
+      "name": "Generate Steps to Replicate"
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        -5040,
+        1600
+      ],
+      "id": "09de4f1c-a578-418e-be44-b134ef52f83d",
+      "name": "Ollama Generate Steps to Replicate",
+      "credentials": {
+        "ollamaApi": {
+          "id": "f5MlqZg2mHCEeM3c",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// Filter out header row and empty rows\nconst dataRows = items.filter(item => {\n  const key = item.json.Key; \n  return key && key.startsWith(\"IN-\");\n});\n\nif (dataRows.length === 0) {\n  return {\n    json: { newKey: \"IN-501\", keyNumber: 501 }\n  };\n}\n\nconst lastRow = dataRows[dataRows.length - 1];\nconst lastKey = lastRow.json.Key;\nconst lastNumber = parseInt(lastKey.split('-')[1]);\nconst newNumber = lastNumber + 1;\nconst newKey = `IN-${String(newNumber).padStart(3, '0')}`;\n\nreturn { json: { newKey, keyNumber: newNumber } };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        -160
+      ],
+      "id": "ad19dfe3-04f1-42f0-8184-5cf2a23d6b0f",
+      "name": "Generate New Key"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -624,
+        -256
+      ],
+      "id": "4c0f70f1-18bb-4873-a5e6-11d361a3ba40",
+      "name": "Read All Issues",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get new issue data from Ollama\nconst ollamaOutput = $('Extract Issue Data').first().json;\nlet extracted;\n\ntry {\n  extracted = JSON.parse(ollamaOutput.text);\n} catch (e) {\n  return { \n    json: { \n      isDuplicate: false, \n      error: \"Failed to parse Ollama response\" \n    } \n  };\n}\n\nconst newSummary = (extracted.summary || \"\").toLowerCase().trim();\n\n// If no summary, allow it (not a duplicate)\nif (!newSummary) {\n  return { json: { isDuplicate: false, reason: \"No summary provided\" } };\n}\n\n// Get all existing issues\nconst allIssues = $('Read All Issues').all();\n\n// Check for duplicates\nfor (let item of allIssues) {\n  const existingKey = item.json.Key;\n  const existingSummary = (item.json.Summary || \"\").toLowerCase().trim();\n  \n  // Skip header row or empty rows\n  if (!existingKey || !existingKey.startsWith('IN-')) continue;\n  \n  // Exact match check (case-insensitive)\n  if (existingSummary === newSummary) {\n    return {\n      json: {\n        isDuplicate: true,\n        existingKey: existingKey,\n        existingSummary: item.json.Summary,\n        existingStatus: item.json.Status,\n        existingReporter: item.json.Reporter,\n        newSummary: extracted.summary\n      }\n    };\n  }\n}\n\n// No duplicate found\nreturn {\n  json: {\n    isDuplicate: false,\n    newSummary: extracted.summary\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        -256
+      ],
+      "id": "0808bbb1-d91c-4c1e-8df1-447115ee7abe",
+      "name": "Check Duplicate"
+    },
+    {
+      "parameters": {
+        "chatId": "=8098869018",
+        "text": "=⚠️ <b>Duplicate Issue Detected!</b>\n\nThis issue already exists in the tracker:\n\n🔑 <b>Key:</b> {{ $('Check Duplicate').item.json.existingKey }}\n📋 <b>Summary:</b> {{ $('Check Duplicate').item.json.existingSummary }}\n📊 <b>Status:</b> {{ $('Check Duplicate').item.json.existingStatus }}\n👤 <b>Reporter:</b> {{ $('Check Duplicate').item.json.existingReporter }}\n\n❌ Your submission was <b>not added</b> to avoid duplicates.\n\n💡 <i>If this is a different issue, please use a different summary.</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        -384
+      ],
+      "id": "b4a72a09-55fb-4f72-a34c-1997e59d10f7",
+      "name": "Notify Duplicate",
+      "webhookId": "1ecd10ca-8f84-4a04-a597-e45cf77c39e3",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "40f08094-ffa4-4b71-9945-1194c18886ed",
+              "leftValue": "={{ $json.isDuplicate }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        -256
+      ],
+      "id": "facd01f8-a74b-44e1-9579-43e92e4f4bd8",
+      "name": "Checking Duplicate data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the extracted data from Ollama\nconst ollamaOutput = $('Extract Update Data').first().json;\nlet extracted;\n\ntry {\n  let text = ollamaOutput.text;\n  \n  // Remove markdown code blocks if present\n  text = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '');\n  \n  // Try to find JSON object in the text\n  const jsonMatch = text.match(/\\{[^}]+\\}/);\n  \n  if (jsonMatch) {\n    extracted = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error(\"No JSON found\");\n  }\n} catch (e) {\n  return {\n    json: {\n      found: false,\n      error: \"Failed to parse Ollama response\"\n    }\n  };\n}\n\nconst searchKey = extracted.key;\nconst newStatus = extracted.status;\n\n// Get all issues from Google Sheets\nconst allIssues = $input.all();\n\n// Search for the key\nlet foundIssue = null;\nlet rowNumber = -1;\n\nfor (let item of allIssues) {\n  if (item.json.Key === searchKey) {\n    foundIssue = item.json;\n    rowNumber = item.json.row_number;\n    break;\n  }\n}\n\n// If not found\nif (!foundIssue) {\n  return {\n    json: {\n      found: false,\n      searchKey: searchKey,\n      newStatus: newStatus\n    }\n  };\n}\n\n// If found\nreturn {\n  json: {\n    found: true,\n    rowNumber: rowNumber,\n    searchKey: searchKey,\n    newStatus: newStatus,\n    currentStatus: foundIssue.Status,\n    summary: foundIssue.Summary\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        192
+      ],
+      "id": "df5e7b30-d200-49db-b5b2-f1d3e8a7b21e",
+      "name": "Find Issue by Key"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract the issue Key and new Status from this message. Return ONLY valid JSON with no additional text.\n\nMessage: {{ $('Telegram Bot').first().json.message.text }}\n\nValid Status values: Open, Work In Progress, Completed, Canceled, Pending, Closed\n\nReturn this exact JSON format:\n{\"key\":\"IN-XXX\",\"status\":\"status_value\"}\n\nIf the status is not one of the valid values, return the closest match.\nCRITICAL: Return ONLY the JSON object, no markdown, no explanations.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -992,
+        192
+      ],
+      "id": "246368de-6045-4772-b542-08c464990693",
+      "name": "Extract Update Data"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f438da5f-c4c5-48c9-837f-30eb3099f032",
+              "leftValue": "={{ $json.found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        192
+      ],
+      "id": "e9a6555d-a16d-489d-9258-6005ea7e1967",
+      "name": "Check if Found"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wVGXQwvlAPNWymW23vubEvLnN6SNbB80UptQq1YcUrs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "={{ $json.newStatus }}",
+            "Key": "={{ $('Find Issue by Key').item.json.searchKey }}"
+          },
+          "matchingColumns": [
+            "Key"
+          ],
+          "schema": [
+            {
+              "id": "Key",
+              "displayName": "Key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reporter",
+              "displayName": "Reporter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Time ",
+              "displayName": "Created Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Response",
+              "displayName": "1st Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resolved",
+              "displayName": "Resolved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aging",
+              "displayName": "Aging",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Portal Tab",
+              "displayName": "Portal Tab",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Impact",
+              "displayName": "Impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        96
+      ],
+      "id": "64b1182c-268a-4410-9abf-57ff7f217276",
+      "name": "Update Status",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=❌ <b>Issue Not Found</b>\n\nThe issue key <code>{{ $('Find Issue by Key').first().json.searchKey }}</code> does not exist in the tracker.\n\n💡 <i>Please check the key and try again.</i>\n\n🔍 Use \"List open issues\" to see all available issues.",
+        "additionalFields": {
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        288
+      ],
+      "id": "16a9956a-3136-4bc7-b23e-431eb1e40809",
+      "name": "Key Not Found",
+      "webhookId": "27dd6fd6-58ef-46c1-b489-accd461de042",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=✅ <b>Status Updated Successfully!</b>\n\n🔑 <b>Key:</b> {{ $('Find Issue by Key').first().json.searchKey }}\n📋 <b>Summary:</b> {{ $('Find Issue by Key').first().json.summary }}\n\n📊 <b>Status Changed:</b>\n   From: {{ $('Find Issue by Key').first().json.currentStatus }}\n   To: {{ $('Find Issue by Key').first().json.newStatus }}\n\n✨ <i>Issue tracker updated!</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        96
+      ],
+      "id": "fb19a6d0-d36c-4b0d-8dbc-ae84e5636c56",
+      "name": "Confirm Update",
+      "webhookId": "8398c6f5-28d7-4a2c-be0a-be9388262380",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract the issue Key and Assignee from this message. Return ONLY valid JSON with no additional text, no markdown, no code blocks.\n\nMessage: {{ $('Telegram Bot').first().json.message.text }}\n\nReturn this exact JSON format and NOTHING else:\n{\"key\":\"IN-XXX\",\"assignee\":\"person_name\"}\n\nCRITICAL: No explanations, no markdown, no code blocks. ONLY the JSON object.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -976,
+        656
+      ],
+      "id": "5895f34d-d853-48f0-a0c6-1ffacfb8189b",
+      "name": "Extract Assignee Data"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wVGXQwvlAPNWymW23vubEvLnN6SNbB80UptQq1YcUrs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Key": "={{ $json.searchKey }}",
+            "Assignee": "={{ $json.newAssignee }}",
+            "Summary": "={{ $json.summary }}",
+            "Status": "={{ $json.status }}"
+          },
+          "matchingColumns": [
+            "Key"
+          ],
+          "schema": [
+            {
+              "id": "Key",
+              "displayName": "Key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Reporter",
+              "displayName": "Reporter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Time ",
+              "displayName": "Created Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Response",
+              "displayName": "1st Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resolved",
+              "displayName": "Resolved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aging",
+              "displayName": "Aging",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Portal Tab",
+              "displayName": "Portal Tab",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Impact",
+              "displayName": "Impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        560
+      ],
+      "id": "cc79016f-d542-4881-8bb6-9973b1065a24",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=✅ <b>Assignee Updated Successfully!</b>\n\n🔑 <b>Key:</b> {{ $json.Key }}\n📋 <b>Summary:</b> {{ $json.Summary }}\n\n👤 <b>Assignee Changed:</b>\n   From: {{ $('Check if Found (Assignee)').item.json.currentAssignee }}\n   To: {{ $json.Assignee }}\n\n✨ <i>Issue successfully assigned!</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        560
+      ],
+      "id": "fe41c52f-abd4-4c2c-8d5d-6c65f3f24d4d",
+      "name": "Confirm Assignment",
+      "webhookId": "41366039-cf5a-4079-8483-e7e594c08565",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=❌ <b>Issue Not Found</b>\n\nThe issue key <code>{{ $json.searchKey }}</code> does not exist in the tracker.\n\n💡 <i>Please check the key and try again.</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        752
+      ],
+      "id": "d0a94cad-b074-4e99-8e57-593c27aa690c",
+      "name": "Key not Found",
+      "webhookId": "20e57b2b-9476-452d-a5cb-9c1bdf43e199",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the extracted data from the AI\nconst ollamaOutput = $('Extract Assignee Data').first().json;\nlet extractedData;\n\ntry {\n  let text = ollamaOutput.text;\n  \n  // Remove markdown code blocks if present\n  text = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n  \n  // Try to find JSON object in the text using regex\n  const jsonMatch = text.match(/\\{[^}]+\\}/);\n  \n  if (jsonMatch) {\n    extractedData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error(\"No JSON found in response\");\n  }\n} catch (error) {\n  return { \n    json: { \n      found: false, \n      error: \"Failed to understand assignment command\",\n      rawResponse: ollamaOutput.text \n    } \n  };\n}\n\nconst searchKey = extractedData.key;\nconst newAssignee = extractedData.assignee;\n\n// Validate extracted data\nif (!searchKey || !newAssignee) {\n  return { \n    json: { \n      found: false, \n      error: \"Missing key or assignee in command\" \n    } \n  };\n}\n\n// Get all issues from Google Sheets\nconst allIssues = $input.all();\n\n// Search for the issue key\nlet foundIssue = null;\nlet rowNumber = -1;\n\nfor (let item of allIssues) {\n  const issueKey = item.json.Key;\n  if (issueKey && issueKey === searchKey) {\n    foundIssue = item.json;\n    rowNumber = item.json.row_number;\n    break;\n  }\n}\n\n// If issue not found\nif (!foundIssue) {\n  return { \n    json: { \n      found: false, \n      searchKey: searchKey, \n      newAssignee: newAssignee \n    } \n  };\n}\n\n// If issue found\nreturn {\n  json: {\n    found: true,\n    rowNumber: rowNumber,\n    searchKey: searchKey,\n    newAssignee: newAssignee,\n    currentAssignee: foundIssue.Assignee || \"Unassigned\",\n    summary: foundIssue.Summary,\n    status: foundIssue.Status\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        656
+      ],
+      "id": "936dcf06-406f-465a-abe9-99d2ad48fb90",
+      "name": "Find Issue for Assignee"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -640,
+        656
+      ],
+      "id": "2e7ce685-6484-4b91-9dec-bc00b85b2991",
+      "name": "Read Existing Issues for Assignee",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract the issue Key and new Priority from this message. Return ONLY valid JSON with no additional text.\n\nMessage: {{ $('Telegram Bot').first().json.message.text }}\n\nValid Priority values: Highest, High, Medium, Low, Lowest\n\nReturn this exact JSON format:\n{\"key\":\"IN-XXX\",\"priority\":\"priority_value\"}\n\nCRITICAL: Return ONLY the JSON object, no markdown, no explanations.",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -992,
+        1104
+      ],
+      "id": "c9d2fb04-7dd5-414c-a126-61511922cf88",
+      "name": "Extract Priority Data"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -640,
+        1104
+      ],
+      "id": "049e75d5-7887-4543-920f-a211ec5d3d8d",
+      "name": "Read Existing Issues for Priority",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the extracted data from the AI\nconst ollamaOutput = $('Extract Priority Data').first().json;\nlet extractedData;\n\ntry {\n  let text = ollamaOutput.text;\n  \n  // Remove markdown code blocks if present\n  text = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n  \n  // Try to find JSON object in the text using regex\n  const jsonMatch = text.match(/\\{[^}]+\\}/);\n  \n  if (jsonMatch) {\n    extractedData = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error(\"No JSON found in response\");\n  }\n} catch (error) {\n  return { \n    json: { \n      found: false, \n      error: \"Failed to understand assignment command\",\n      rawResponse: ollamaOutput.text \n    } \n  };\n}\n\nconst searchKey = extractedData.key;\nconst newPriority = extractedData.priority;\n\n// Get all issues from Google Sheets\nconst allIssues = $input.all();\n\n// Search for the issue key\nlet foundIssue = null;\nfor (let item of allIssues) {\n  const issueKey = item.json.Key;\n  if (issueKey && issueKey === searchKey) {\n    foundIssue = item.json;\n    break;\n  }\n}\n\nif (!foundIssue) {\n  return { json: { found: false, searchKey: searchKey, newPriority: newPriority } };\n}\n\nreturn {\n  json: {\n    found: true,\n    searchKey: searchKey,\n    newPriority: newPriority,\n    currentPriority: foundIssue.Priority || \"Not set\",\n    summary: foundIssue.Summary,\n    status: foundIssue.Status\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        1104
+      ],
+      "id": "788289f8-9a15-48ae-9a90-76d9a6b67910",
+      "name": "Find Issue for Priority"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "513092f3-1130-43df-ab9d-2f36c52ceb87",
+              "leftValue": "={{ $json.found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        1104
+      ],
+      "id": "80b5fb84-a38e-410e-8517-dd1cb16746d3",
+      "name": "Check if Found (Priority)"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Summary": "={{ $json.summary }}",
+            "Priority": "={{ $json.newPriority }}",
+            "Key": "={{ $json.searchKey }}",
+            "Status": "={{ $json.status }}"
+          },
+          "matchingColumns": [
+            "Key"
+          ],
+          "schema": [
+            {
+              "id": "Key",
+              "displayName": "Key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reporter",
+              "displayName": "Reporter",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created",
+              "displayName": "Created",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Created Time ",
+              "displayName": "Created Time ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "1st Response",
+              "displayName": "1st Response",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Resolved",
+              "displayName": "Resolved",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Aging",
+              "displayName": "Aging",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Portal Tab",
+              "displayName": "Portal Tab",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Impact",
+              "displayName": "Impact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        1008
+      ],
+      "id": "1383973b-92d2-412e-bfcd-19df2fdf2132",
+      "name": "Update Priority",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=❌ <b>Issue Not Found</b>\n\nThe issue key <code>{{ $json.searchKey }}</code> does not exist in the tracker.\n\n💡 <i>Please check the key and try again.</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        1200
+      ],
+      "id": "916031f3-c84c-4535-b74c-77b23bb074f1",
+      "name": "Priority Key Not Found",
+      "webhookId": "34d7df7c-c234-4976-9e99-97da4e6c4e82",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=🎯 <b>Priority Updated Successfully!</b>\n\n🔑 <b>Key:</b> {{ $json.Key }}\n📋 <b>Summary:</b> {{ $json.Summary }}\n\n⚡ <b>Priority Changed:</b>\n   From: {{ $('Check if Found (Priority)').item.json.currentPriority }}\n   To: {{ $json.Priority }}\n\n✨ <i>Priority level updated!</i>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "disable_web_page_preview": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        1008
+      ],
+      "id": "fb3a14fd-ac86-468a-9a81-e233a262ee87",
+      "name": "Confirm Priority Update",
+      "webhookId": "d8bf3c08-7701-4686-8f67-52df6a1ee6bc",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c9515baa-8120-48a4-b3c2-b3c045efbae9",
+              "leftValue": "={{ $json.found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        656
+      ],
+      "id": "268bf4a9-7889-46e3-accd-e334f0bf0e9d",
+      "name": "Check if Found (Assignee)"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract the issue Key from this message. Return ONLY valid JSON with no additional text, explanations, or markdown.\n\nMessage: {{ $('Telegram Bot').first().json.message.text }}\n\nCRITICAL: Return ONLY this exact format with NO markdown, NO code blocks, NO explanations:\n{\"key\":\"IN-XXX\"}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -976,
+        1536
+      ],
+      "id": "4bd7938d-9396-45a8-b289-7f226a816f90",
+      "name": "Extract View Issue Data"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -624,
+        1536
+      ],
+      "id": "51c7657e-dd34-498c-9418-5bab55bc29e3",
+      "name": "Read Existing Issues for View",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get extracted data from Ollama\nconst ollamaOutput = $('Extract View Issue Data').first().json;\nlet extracted;\n\ntry {\n  let text = ollamaOutput.text;\n  \n  // Remove markdown code blocks if present\n  text = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '');\n  \n  // Try to find JSON object in the text\n  const jsonMatch = text.match(/\\{[^}]+\\}/);\n  \n  if (jsonMatch) {\n    extracted = JSON.parse(jsonMatch[0]);\n  } else {\n    throw new Error(\"No JSON found\");\n  }\n} catch (e) {\n  return {\n    json: {\n      found: false,\n      error: \"Failed to understand view command\"\n    }\n  };\n}\n\nconst searchKey = extracted.key;\n\n// Get all issues from Google Sheets\nconst allIssues = $input.all();\n\n// Search for the key\nlet foundIssue = null;\n\nfor (let item of allIssues) {\n  if (item.json.Key === searchKey) {\n    foundIssue = item.json;\n    break;\n  }\n}\n\n// If not found\nif (!foundIssue) {\n  return {\n    json: {\n      found: false,\n      searchKey: searchKey\n    }\n  };\n}\n\n// If found\nreturn {\n  json: {\n    found: true,\n    searchKey: searchKey,\n    summary: foundIssue.Summary || \"Not set\",\n    reporter: foundIssue.Reporter || \"Not set\",\n    status: foundIssue.Status || \"Not set\",\n    assignee: foundIssue.Assignee || \"Not set\",\n    created: foundIssue.Created || \"Not set\",\n    portalTab: foundIssue[\"Portal Tab\"] || \"Not set\",\n    priority: foundIssue.Priority || \"Not set\",\n    impact: foundIssue.Impact || \"Not set\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -416,
+        1536
+      ],
+      "id": "18a9c1ce-2d37-4739-a088-97f09da4a559",
+      "name": "Find Issue for View"
+    },
+    {
+      "parameters": {
+        "jsCode": "const issue = $json;\n\n// Create a formatted message with all issue details\nconst message = `\n🔍 <b>Issue Details: ${issue.searchKey}</b>\n\n📋 <b>Summary:</b> ${issue.summary}\n👤 <b>Reporter:</b> ${issue.reporter}\n📊 <b>Status:</b> ${issue.status}\n👥 <b>Assignee:</b> ${issue.assignee}\n📅 <b>Created:</b> ${issue.created}\n🗂️ <b>Portal Tab:</b> ${issue.portalTab}\n⚡ <b>Priority:</b> ${issue.priority}\n📈 <b>Impact:</b> ${issue.impact}\n\n💡 <i>Use commands like:\n• \"Update ${issue.searchKey} to Completed\"\n• \"Assign ${issue.searchKey} to @username\"\n• \"Change priority of ${issue.searchKey} to High\"</i>\n`;\n\nreturn {\n  json: {\n    formattedMessage: message,\n    searchKey: issue.searchKey,\n    summary: issue.summary,\n    status: issue.status\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        1440
+      ],
+      "id": "19ebad4b-6191-4b19-bf8c-8de75edfbed6",
+      "name": "Format Issue Details"
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "={{ $json.formattedMessage }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        1440
+      ],
+      "id": "f9e898ee-9067-4e25-88bb-e65d85485739",
+      "name": "Send Issue Details",
+      "webhookId": "649eeeaf-af8b-4b09-9fde-b3367fbd93c4",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "=❌ <b>Issue Not Found</b>\n\nThe issue key <code>{{ $json.searchKey }}</code> does not exist in the tracker.\n\n💡 <i>Please check the key and try again.</i>\n\n🔍 Use \"List open issues\" to see all available issues.",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1632
+      ],
+      "id": "2154f00e-5003-4089-a3e3-e8ab6e95f2dd",
+      "name": "View Key Not Found",
+      "webhookId": "f6ff8579-9cbd-4b9e-8785-3147bf89a04f",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b047b73b-ee16-44ae-9786-bdd91da4861a",
+              "leftValue": "={{ $json.found }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -208,
+        1536
+      ],
+      "id": "1f8a36be-8eb4-41da-b850-557f09e2d62b",
+      "name": "Check if Found (View)"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Bot').item.json.message.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful bug tracker assistant. Your role is to help users with questions about the issue tracking system.\n\nAvailable Information:\n- You have access to Google Sheets containing all issues/bugs\n- Issues have: Key (IN-XXX), Summary, Reporter, Status, Assignee, Created, Portal Tab, Priority, Impact\n\nHow to Help:\n- Answer questions about how to file issues\n- Provide the template for reporting bugs\n- Explain the tracking system\n- Help users understand statuses, priorities, and impacts\n- Be polite and friendly\n\nTemplate for Filing Issues:\nSummary: [Brief title of the issue]\nDescription: [Detailed explanation of the problem]\nReporter: [Your email]\nPriority: [Highest/High/Medium/Low/Lowest]\nImpact: [Extensive/Widespread, Significant/Large, Moderate/Limited, Minor/Localized]\nPortal Tab: [INTERNAL HOME PAGE, Customer Success Tab, Team Management Tab, Job Listings Tab, Active Pool Tab, Recruitment Tab, Careers Page]\n\nIf you're unsure about something, politely say you don't know and suggest the user contact support."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -928,
+        2384
+      ],
+      "id": "feac1fab-d47f-4bc4-93a7-5136b35a2dd0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -704,
+        2576
+      ],
+      "id": "1620b668-51b4-4e0c-934d-6f8bb2691493",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -576,
+        2384
+      ],
+      "id": "aa7059ce-9da6-4cdf-b403-449ce9d86e34",
+      "name": "Send a text message",
+      "webhookId": "3d25f1d8-649e-49f9-99e3-9585177ba01a",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=Session Key: ={{ $('Telegram Bot').first().json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        2640
+      ],
+      "id": "5d7ff37b-dad8-4148-a87d-6343b4d9b6c8",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all issues from Google Sheets\nconst allIssues = $input.all();\n\n// Filter only valid issues (skip header and empty rows)\nconst validIssues = allIssues.filter(item => {\n  const key = item.json.Key;\n  return key && key.startsWith('IN-');\n});\n\n// Group issues by status\nconst issuesByStatus = {\n  'Open': [],\n  'Work In Progress': [],\n  'Pending': [],\n  'Completed': [],\n  'Canceled': [],\n  'Closed': []\n};\n\n// Categorize issues\nfor (let item of validIssues) {\n  const status = item.json.Status || 'Open';\n  if (issuesByStatus[status]) {\n    issuesByStatus[status].push(item.json);\n  }\n}\n\n// Count totals\nconst totalIssues = validIssues.length;\nconst openCount = issuesByStatus['Open'].length;\nconst wipCount = issuesByStatus['Work In Progress'].length;\nconst pendingCount = issuesByStatus['Pending'].length;\n\n// Build the message\nlet message = `📊 <b>Issue Tracker Summary</b>\\n`;\nmessage += `📈 <b>Total:</b> ${totalIssues}\\n`;\nmessage += `🔴 <b>Open:</b> ${openCount} | 🟡 <b>In Progress:</b> ${wipCount} | 🟠 <b>Pending:</b> ${pendingCount}\\n\\n`;\n\n// Add Open Issues\nif (issuesByStatus['Open'].length > 0) {\n  message += `🔴 <b>Open</b>\\n`;\n  for (let issue of issuesByStatus['Open']) {\n    const priority = issue.Priority ? `[${issue.Priority}]` : '';\n    message += `• ${issue.Key} ${priority} — ${issue.Summary}\\n`;\n  }\n  message += `\\n`;\n}\n\n// Add Work In Progress Issues\nif (issuesByStatus['Work In Progress'].length > 0) {\n  message += `🟡 <b>In Progress</b>\\n`;\n  for (let issue of issuesByStatus['Work In Progress']) {\n    const priority = issue.Priority ? `[${issue.Priority}]` : '';\n    message += `• ${issue.Key} ${priority} — ${issue.Summary}\\n`;\n  }\n  message += `\\n`;\n}\n\n// Add Pending Issues\nif (issuesByStatus['Pending'].length > 0) {\n  message += `🟠 <b>Pending</b>\\n`;\n  for (let issue of issuesByStatus['Pending']) {\n    const priority = issue.Priority ? `[${issue.Priority}]` : '';\n    message += `• ${issue.Key} ${priority} — ${issue.Summary}\\n`;\n  }\n  message += `\\n`;\n}\n\n// Add footer\nmessage += `💡 <i>Use \"Show IN-XXX\" for details.</i>`;\n\nreturn {\n  json: {\n    message: message,\n    totalIssues: totalIssues,\n    openCount: openCount,\n    wipCount: wipCount\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -720,
+        1984
+      ],
+      "id": "4e3cd313-42f8-411e-a722-73c04ab1f68a",
+      "name": "Format Issue List"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -640,
+        192
+      ],
+      "id": "1d8d4dc4-d89d-4913-be60-c110debe5816",
+      "name": "Read Existing Issues for Update",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU",
+          "mode": "list",
+          "cachedResultName": "Helpdesk Track",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -928,
+        1984
+      ],
+      "id": "7475f6b9-eb8c-40e9-8ed2-d16c4e0a463d",
+      "name": "Read All Issues1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Bot').first().json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        1984
+      ],
+      "id": "e30e0df9-e81d-4a31-98a0-1736851b5cc2",
+      "name": "Send List to Telegram",
+      "webhookId": "f39b23b7-839c-49ea-bcb3-7cf5cd792cff",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "={{ $('Format Issue Template').first().json.formattedIssue }}\n",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -4416,
+        1072
+      ],
+      "id": "3cfa9b36-1351-4ae7-b64c-a56f5fd474b0",
+      "name": "Confirm Issue Logged",
+      "webhookId": "56aa221b-dd7f-4b9b-9681-bae301f546ab",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the new key (e.g., \"IN-511\") from your \"Get Last Key\" node\nconst newKey = $('Generate New Key').first().json.newKey || 'IN-XXX';\n\n// Get extracted issue data (from the \"Extract Issue Data\" node)\nlet extracted;\ntry {\n  const rawText = $('Extract Issue Data').first().json.text;\n  const cleanText = rawText\n    .replace(/```json\\s*/i, '')  // remove ```json\n    .replace(/```/g, '')         // remove closing ```\n    .trim();\n  extracted = JSON.parse(cleanText);\n} catch (e) {\n  return { json: { error: 'Failed to parse issue data' } };\n}\n\n// Get the plain text steps from the \"Generate Steps to Replicate\" node\nlet steps = $('Generate Steps to Replicate').first().json.text || 'Steps not available.';\nsteps = steps.replace(/^Here are the steps.*?\\n+/i, '').trim(); // remove “Here are the steps...” if present\n\n// Get current timestamp (Manila time) in format: MM/DD/YYYY HH:mm:ss AM/PM\nconst now = new Date();\nconst manilaTime = new Date(now.toLocaleString(\"en-US\", { timeZone: \"Asia/Manila\" }));\nconst pad = n => String(n).padStart(2, \"0\");\nlet hours = manilaTime.getHours();\nconst ampm = hours >= 12 ? \"PM\" : \"AM\";\nhours = hours % 12;\nhours = hours ? hours : 12;\nconst created = `${pad(manilaTime.getMonth() + 1)}/${pad(manilaTime.getDate())}/${manilaTime.getFullYear()} ${pad(hours)}:${pad(manilaTime.getMinutes())}:${pad(manilaTime.getSeconds())} ${ampm}`;\n\n// Assign defaults or extracted fields\nconst summary = extracted.summary || 'Untitled Issue';\nconst description = extracted.description || 'No description provided.';\nconst reporter = extracted.reporter || 'Unknown Reporter';\nconst assignee = extracted.assignee || 'Unassigned';\nconst portalTab = extracted.portal_tab || 'General';\nconst priority = extracted.priority || 'Medium';\nconst impact = extracted.impact || 'Normal';\nconst status = 'Open';\n\n// Build formatted message\nconst formatted = `\n✅ Ticket Successfully Recorded to Helpdesk Tracker\n\n🔍 Issue Details: ${newKey}\n📋 Summary: ${summary}\n👤 Reporter: ${reporter}\n📊 Status: ${status}\n👥 Assignee: ${assignee}\n📅 Created: ${created}\n🗂 Portal Tab: ${portalTab}\n⚡️ Priority: ${priority}\n📈 Impact: ${impact}\n\nSteps to replicate:\n${steps}\n\nActual Result: [Describe the actual behavior here.]\n\nExpected Result: [Describe what should happen.]\n`.trim();\n\n// Return structured data\nreturn {\n  json: {\n    formattedIssue: formatted,\n    Key: newKey,\n    Summary: summary,\n    Reporter: reporter,\n    Status: status,\n    Assignee: assignee,\n    Created: created,\n    \"Portal Tab\": portalTab,\n    Priority: priority,\n    Impact: impact,\n    Steps: steps\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4608,
+        1072
+      ],
+      "id": "749b6a00-33a3-4dd8-8aeb-760d8c54dadf",
+      "name": "Format Issue Template"
+    },
+    {
+      "parameters": {
+        "chatId": "8098869018",
+        "text": "={{ $json.formattedIssue }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1024,
+        -160
+      ],
+      "id": "0fce96d0-1583-4de3-a033-09634196e37e",
+      "name": "Send Confirmation message",
+      "webhookId": "5afa2a17-8ad1-4738-8459-df6a18e3b6a1",
+      "credentials": {
+        "telegramApi": {
+          "id": "2Cg649ES6s5X2XqN",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the new key (e.g., \"IN-511\") from your \"Get Last Key\" node\nconst newKey = $('Generate New Key').first().json.newKey || 'IN-XXX';\n\n// Get extracted issue data (from the \"Extract Issue Data\" node)\nlet extracted;\ntry {\n  const rawText = $('Extract Issue Data').first().json.text;\n  const cleanText = rawText\n    .replace(/```json\\s*/i, '')  // remove ```json\n    .replace(/```/g, '')         // remove closing ```\n    .trim();\n  extracted = JSON.parse(cleanText);\n} catch (e) {\n  return { json: { error: 'Failed to parse issue data' } };\n}\n\n// Get current timestamp (Manila time) in format: MM/DD/YYYY HH:mm:ss AM/PM\nconst now = new Date();\nconst manilaTime = new Date(now.toLocaleString(\"en-US\", { timeZone: \"Asia/Manila\" }));\nconst pad = n => String(n).padStart(2, \"0\");\nlet hours = manilaTime.getHours();\nconst ampm = hours >= 12 ? \"PM\" : \"AM\";\nhours = hours % 12;\nhours = hours ? hours : 12;\nconst created = `${pad(manilaTime.getMonth() + 1)}/${pad(manilaTime.getDate())}/${manilaTime.getFullYear()} ${pad(hours)}:${pad(manilaTime.getMinutes())}:${pad(manilaTime.getSeconds())} ${ampm}`;\n\n// Extract fields (use defaults if missing)\nconst summary = extracted.summary || 'Untitled Issue';\nconst reporter = extracted.reporter || 'Unknown Reporter';\nconst assignee = extracted.assignee || 'Unassigned';\nconst portalTab = extracted.portal_tab || 'Unassigned';\nconst priority = extracted.priority || 'Unassigned';\n  const impact = extracted.impact || 'Unassigned';\nconst status = 'Open';\n\n// Build confirmation message\nconst formatted = `\n✅ Ticket Successfully Recorded to Helpdesk Tracker\n\n🔍 Issue Details:\n🔑 Key: ${$input.first().json.Key}\n📋 Summary: ${summary}\n👤 Reporter: ${reporter}\n📊 Status: ${status}\n👥 Assignee: ${assignee}\n📅 Created: ${created}\n🗂️ Portal Tab: ${portalTab}\n⚡️ Priority: ${priority}\n📈 Impact: ${impact}\n\n✨ Your issue has been logged successfully!\n`.trim();\n\n// Return structured JSON (for Telegram and Google Sheets)\nreturn {\n  json: {\n    formattedIssue: formatted,\n    Key: newKey,\n    Summary: summary,\n    Reporter: reporter,\n    Status: status,\n    Assignee: assignee,\n    Created: created,\n    \"Portal Tab\": portalTab,\n    Priority: priority,\n    Impact: impact\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        -160
+      ],
+      "id": "e6919d99-23b4-4adb-9d70-f5dc994a5843",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        -4640,
+        864
+      ],
+      "id": "02a6605c-5076-4d96-b134-9242fe2db69c",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "f5MlqZg2mHCEeM3c",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -4592,
+        656
+      ],
+      "id": "696086bc-676f-4a9b-97d5-afba615ac8b6",
+      "name": "Generate steps to replicate"
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "Hello"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -4368,
+        848
+      ],
+      "id": "4d871a8f-e601-4b4b-9cb7-e9771e1dfeeb",
+      "name": "Create a document in Google Docs",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Helpdesk Tracker link:\nhttps://docs.google.com/spreadsheets/d/1ltSWmqh8YssqWVSTJySf_LgLRFhzlct0xb_AqMWGscU/edit?gid=0#gid=0",
+        "height": 576,
+        "width": 320,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2720,
+        896
+      ],
+      "typeVersion": 1,
+      "id": "37b28e97-506a-4afa-a00c-0cac9f546a94",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# New Issue Arrive goes here",
+        "height": 464,
+        "width": 2358
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "d4ad849f-7692-43ed-abfc-e5f9cb81f736",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Update an Status of the Issue",
+        "height": 432,
+        "width": 2358,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "5dfbf9e4-f749-41d4-8f3f-25b65e140ed0",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Update an Assignee of the Issue",
+        "height": 432,
+        "width": 2358,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        496
+      ],
+      "typeVersion": 1,
+      "id": "80132d8e-39bc-4a5c-ad67-ddf747fe3f13",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Update an Priority of the Issue",
+        "height": 432,
+        "width": 2358,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        944
+      ],
+      "typeVersion": 1,
+      "id": "7e029fab-f0ed-4df0-a469-eeab4ec31471",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# View Issue",
+        "height": 432,
+        "width": 2358,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        1392
+      ],
+      "typeVersion": 1,
+      "id": "beb53845-b9b5-44e8-a82d-4a8c3b94d2a4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# View list of Issues",
+        "height": 432,
+        "width": 2358,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        1840
+      ],
+      "typeVersion": 1,
+      "id": "a2c1b694-218d-4fe7-a30f-d9cb3a0b1033",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2240,
+        1312
+      ],
+      "id": "572a68cb-63e4-4f34-bb8f-5981b8910281",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ny2D7JmVOGu5YgP7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Proper Responce",
+        "height": 480,
+        "width": 2358,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        2304
+      ],
+      "typeVersion": 1,
+      "id": "f5e275f0-3640-472f-8359-2145a0c1a7ad",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1024,
+        2592
+      ],
+      "id": "5e9e97f1-3c57-4428-9a68-1864108bcf4b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ny2D7JmVOGu5YgP7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Route based on result of AI Agent",
+        "height": 576,
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1840,
+        896
+      ],
+      "typeVersion": 1,
+      "id": "fb586c7b-bcd0-4f38-87ab-275a34488889",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "# Receive a message and analize.",
+        "height": 576,
+        "width": 528,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2384,
+        896
+      ],
+      "typeVersion": 1,
+      "id": "9f9cd13c-ffc6-48f2-bc04-ecb7873ea0da",
+      "name": "Sticky Note9"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Route Based on Classification": {
+      "main": [
+        [
+          {
+            "node": "Extract Issue Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Update Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Assignee Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Priority Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract View Issue Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read All Issues1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Last Key": {
+      "main": [
+        [
+          {
+            "node": "Generate New Key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Sheet Data": {
+      "main": [
+        [
+          {
+            "node": "Append Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Issue Data": {
+      "main": [
+        [
+          {
+            "node": "Read All Issues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message Classification": {
+      "main": [
+        [
+          {
+            "node": "Route Based on Classification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append Row": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Bot": {
+      "main": [
+        [
+          {
+            "node": "Message Classification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Generate Steps to Replicate": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Steps to Replicate",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate New Key": {
+      "main": [
+        [
+          {
+            "node": "Prepare Sheet Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Steps to Replicate": {
+      "main": [
+        [
+          {
+            "node": "Format Issue Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read All Issues": {
+      "main": [
+        [
+          {
+            "node": "Check Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Checking Duplicate data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking Duplicate data": {
+      "main": [
+        [
+          {
+            "node": "Notify Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Last Key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Update Data": {
+      "main": [
+        [
+          {
+            "node": "Read Existing Issues for Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Issue by Key": {
+      "main": [
+        [
+          {
+            "node": "Check if Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Found": {
+      "main": [
+        [
+          {
+            "node": "Update Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Key Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Status": {
+      "main": [
+        [
+          {
+            "node": "Confirm Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Assignee Data": {
+      "main": [
+        [
+          {
+            "node": "Read Existing Issues for Assignee",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Confirm Assignment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Issue for Assignee": {
+      "main": [
+        [
+          {
+            "node": "Check if Found (Assignee)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Existing Issues for Assignee": {
+      "main": [
+        [
+          {
+            "node": "Find Issue for Assignee",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Priority Data": {
+      "main": [
+        [
+          {
+            "node": "Read Existing Issues for Priority",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Existing Issues for Priority": {
+      "main": [
+        [
+          {
+            "node": "Find Issue for Priority",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Issue for Priority": {
+      "main": [
+        [
+          {
+            "node": "Check if Found (Priority)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Found (Priority)": {
+      "main": [
+        [
+          {
+            "node": "Update Priority",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Priority Key Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Priority": {
+      "main": [
+        [
+          {
+            "node": "Confirm Priority Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Found (Assignee)": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Key not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract View Issue Data": {
+      "main": [
+        [
+          {
+            "node": "Read Existing Issues for View",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Existing Issues for View": {
+      "main": [
+        [
+          {
+            "node": "Find Issue for View",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Issue for View": {
+      "main": [
+        [
+          {
+            "node": "Check if Found (View)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Issue Details": {
+      "main": [
+        [
+          {
+            "node": "Send Issue Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Found (View)": {
+      "main": [
+        [
+          {
+            "node": "Format Issue Details",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "View Key Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Existing Issues for Update": {
+      "main": [
+        [
+          {
+            "node": "Find Issue by Key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read All Issues1": {
+      "main": [
+        [
+          {
+            "node": "Format Issue List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Issue List": {
+      "main": [
+        [
+          {
+            "node": "Send List to Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Issue Template": {
+      "main": [
+        [
+          {
+            "node": "Confirm Issue Logged",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Send Confirmation message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate steps to replicate",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document in Google Docs": {
+      "ai_tool": [
+        [
+          {
+            "node": "Generate steps to replicate",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Message Classification",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract View Issue Data",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract Priority Data",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract Assignee Data",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract Update Data",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract Issue Data",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2ee59784-0fea-4cea-801b-871a76a8bd9b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad18c53f208294abbce3d42899d14c2ca274cf54c2abcddca4ee638896213157"
+  },
+  "id": "eCrp6cQWakqS1OED",
+  "tags": []
+}

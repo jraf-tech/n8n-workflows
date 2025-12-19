@@ -1,0 +1,680 @@
+{
+  "name": "Automated Slack Bug Report Processing and Documentation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "trigger": [
+          "message",
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "C09LQ7CRXU5",
+          "mode": "list",
+          "cachedResultName": "bug-reports-channel"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        128,
+        256
+      ],
+      "id": "8d80a22f-78bf-40f6-ba24-4637792aed3c",
+      "name": "Slack Trigger",
+      "webhookId": "3219d013-7481-4688-8b30-f9ff30ed3230",
+      "credentials": {
+        "slackApi": {
+          "id": "Azzdf6HFBha7JVX2",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $json[\"output\"] || $json[\"response\"] || \"\";\nconst cleaned = raw\n  .replace(/^```(json)?/i, \"\")\n  .replace(/```$/i, \"\")\n  .trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (err) {\n  parsed = { error: \"Invalid JSON\", raw: cleaned };\n}\n\n// Normalize keys (lowercase)\nconst normalized = {};\nfor (const key in parsed) {\n  normalized[key.toLowerCase()] = parsed[key];\n}\n\nreturn [normalized];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1328,
+        -656
+      ],
+      "id": "31374389-ba3f-4174-aea3-49d35ce9d7c4",
+      "name": "Parse Input"
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "={{ $json.summary }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        928,
+        -336
+      ],
+      "id": "6fc618fb-e4cf-41fb-851e-90a3039a67ea",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "yEvfTihhKZnDLxdP",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = items[0].json;\n\nconst report = `\nTitle of the issue: ${data.summary || \"None\"}\n\nDescription:\n${data.description || \"None\"}\n\nSteps to replicate:\n${Array.isArray(data.stepstoreplicate)\n  ? data.stepstoreplicate.map((s, i) => `${i + 1}. ${s}`).join(\"\\n\")\n  : \"1. None (Not specified)\"}\n\nActual Result:\n${data.actualresult || \"None\"}\n\nExpected Result:\n${data.expectedresult || \"None\"}\n\nReporter: ${data.reporter || \"None\"}\nPriority: ${data.priority || \"None\"}\nImpact: ${data.impact || \"None\"}\nPortal Tab: ${data.portaltab || \"None\"}\n`.trim();\n\nreturn [{ json: { summary: data.summary || \"None\", report } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -336
+      ],
+      "id": "8ffd4ed4-8add-4fff-b40c-4de9b74fdf91",
+      "name": "GenerateModelPoint"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09LQ7CRXU5",
+          "mode": "list",
+          "cachedResultName": "bug-reports-channel"
+        },
+        "text": "=✅ Bug report created successfully.\nTitle: {{ $('GenerateModelPoint').item.json.summary }}\nGoogle Doc: {{ $json.documentId }}\n",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1424,
+        -336
+      ],
+      "id": "83df9bed-64fc-46a3-be87-8bb915be4afe",
+      "name": "Send a message",
+      "webhookId": "1daac7cc-1a21-4dcb-a24d-32e0ffde8c30",
+      "credentials": {
+        "slackApi": {
+          "id": "Azzdf6HFBha7JVX2",
+          "name": "Slack account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('GenerateModelPoint').item.json.report }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        -336
+      ],
+      "id": "374c16ae-17ee-4817-969f-a4eae3a06a0f",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "yEvfTihhKZnDLxdP",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Create a bug report using the following format:\nTitle of the issue (be descriptive)\nDescription: \nSteps to replicate: \nActual Result:\nExpected Result:\n\nIf you can't fill out certain fields meaning kulang sinend nilang info.\n\nPlease create a this sa goodle docs\n\nUse \"I\" which is the first person, you to remove yourself from the scenario. For a report always use the third person.\n\nExample, instead of saying \"I've noticed that some employees' leave credits are not being deducted even after their leave requests have been approved. Additionally, when I attempted to sync the records, there was no change.\"\nSay: \"Some employees' leave credits are not being deducted even after their leave requests have been approved. Also,  after trying  to sync the records, there was no change.\n\nDon't make it feel too AI generated\n\n\n---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\nInput Format (Chat Message Structure)\n\nUsers must format their messages like this:\nSummary: [Brief title of the issue]\nDescription: [Detailed explanation of the problem]\nReporter: [Name of person reporting]\nPriority: [Low/Medium/High/Highest]\nImpact: [Depend to user input/ if none append nothing]\nPortal Tab: [Depend to user input/ if none append nothing]\n\nExample Input:\nSummary: PTO Sync concern\nDescription: I've noticed that some employees' leave credits are not being deducted even after their leave requests have been approved. Additionally, when I attempted to sync the records, there was no change.\nFor example, Bulong submitted all her leave requests through the Internal Portal, and they were approved there. However, her leave credits were not reduced and still differ from those shown in the Worksched Portal.\nShe’s not the only employee I've noticed this issue with, although there are still some employee records that synced properly and appear to be accurate.\nI've attached copies of her leave requests from both portals, and my attempt to sync her leave credits. She's supposed to only have 3PTO left since she already used 12. I've been manually adjusting the leave credits instead.\nReporter: christinem@codev.com\nPriority: Medium\nImpact: Significant / Large\nPortal Tab: Team Management Tab\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\nOutput Format (Bug Report Structure)\nFormat: Plain text, NO markdown formatting\nTitle of the issue: [Descriptive title]\n\nDescription:\n[Third-person description of the issue]\n\nSteps to replicate:\n1. [First step]\n2. [Second step]\n3. [Continue with logical steps]\n\nActual Result: [What actually happens - the bug]\n\nExpected Result: [What should happen - the correct behavior]\n\nReporter: [Name]\n\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\nExample Output:\nTitle of the issue: PTO Sync concern\nDescription:\nSome employees' leave credits are not being deducted even after their leave requests have been approved. Also, after trying to sync the records, there was no change.\n\nSteps to replicate:\nGo to the Internal Portal. (https://internal.codev.com/)\nSubmit a leave request and get it approved.\nCheck the leave credits in the Worksched Portal.\nAttempt to sync records.\n\nActual Result: Leave credits remain unchanged in the Worksched Portal even after syncing.\n\nExpected Result: Leave credits should automatically update and deduct after leave requests are approved and synced.\n\nReporter: christinem@codev.com\n\n\n\n\n\nYou are an expert QA engineer that analyzes bug reports and writes structured outputs.\n\nAnalyze the following issue and produce a JSON response with these fields:\n- Summary: concise title of the issue\n- Description: cleaned and objective version of the user’s description\n- StepsToReplicate: numbered steps to reproduce the issue\n- ActualResult: what happens now\n- ExpectedResult: what should happen\n- Reporter: (if provided)\n- Priority:\n- Impact:\n- PortalTab:\n\nReturn ONLY valid JSON (no markdown code fences, no explanations).\n\nMessage:\n{{ $json[\"text\"] }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        -656
+      ],
+      "id": "fe49477e-6771-41be-893d-20dbb4217204",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        928,
+        -464
+      ],
+      "id": "c010a373-c746-4e58-a183-7233996a45d3",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "f5MlqZg2mHCEeM3c",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the Slack message text\nconst text = $input.first().json.text || '';\n\n// Parse Summary\nconst summaryMatch = text.match(/Summary:\\s*(.+?)(?=\\n|$)/i);\nconst summary = summaryMatch ? summaryMatch[1].trim() : '';\n\n// Parse Description (can be multiline, stops at next field)\nconst descMatch = text.match(/Description:\\s*([\\s\\S]+?)(?=\\nReporter:|$)/i);\nconst description = descMatch ? descMatch[1].trim() : '';\n\n// Parse Reporter\nconst reporterMatch = text.match(/Reporter:\\s*(.+?)(?=\\n|$)/i);\nconst reporter = reporterMatch ? reporterMatch[1].trim() : '';\n\n// Parse Priority\nconst priorityMatch = text.match(/Priority:\\s*(.+?)(?=\\n|$)/i);\nconst priority = priorityMatch ? priorityMatch[1].trim() : '';\n\n// Parse Impact (optional)\nconst impactMatch = text.match(/Impact:\\s*(.+?)(?=\\n|$)/i);\nconst impact = impactMatch ? impactMatch[1].trim() : '';\n\n// Parse Portal Tab (optional)\nconst portalTabMatch = text.match(/Portal Tab:\\s*(.+?)(?=\\n|$)/i);\nconst portalTab = portalTabMatch ? portalTabMatch[1].trim() : '';\n\n// Return parsed data\nreturn {\n  json: {\n    summary: summary,\n    description: description,\n    reporter: reporter,\n    priority: priority,\n    impact: impact,\n    portalTab: portalTab,\n    rawText: text // Keep original for debugging\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        352,
+        256
+      ],
+      "id": "4430d8b2-f5a5-4e40-8031-94f0c5db2639",
+      "name": "Parse Slack Message"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75fbea74-61c1-4261-8357-3689e1753a24",
+              "leftValue": "={{ $json.summary }}",
+              "rightValue": "is not empty",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "896cc0b2-43b9-4638-80d2-140ac044db43",
+              "leftValue": "={{ $json.description }}",
+              "rightValue": "is not empty",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0b086b67-2431-43c5-a69a-05549e7f8890",
+              "leftValue": "={{ $json.reporter }}",
+              "rightValue": "is not empty",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3b179a74-f369-490b-91ab-533717e1b23f",
+              "leftValue": "={{ $json.priority }}",
+              "rightValue": "is not empty",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        256
+      ],
+      "id": "269f7e5b-0266-4caf-813a-fed43047d9c8",
+      "name": "Validate Required Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:11434/api/generate",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"llama3.1:3b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a bug report formatter. Convert user-submitted bug reports into a structured format. Follow these rules strictly:\\n\\n1. Convert first-person statements to third-person (e.g., \\\"I noticed\\\" becomes \\\"Some employees experienced\\\")\\n2. Extract logical steps to replicate the issue from the description\\n3. Define the actual result (what's happening - the bug)\\n4. Define the expected result (what should happen correctly)\\n5. Use plain text only, no markdown formatting\\n6. Write naturally, avoid robotic or obviously AI-generated language\\n7. Only include Impact and Portal Tab lines if they were provided in the input\\n\\nOutput must follow this exact format:\\n\\nTitle of the issue: [title]\\n\\nDescription:\\n[third-person description]\\n\\nSteps to replicate:\\n1. [step]\\n2. [step]\\n3. [continue as needed]\\n\\nActual Result: [what's broken]\\n\\nExpected Result: [what should work]\\n\\nReporter: [name]\\nImpact: [only if provided]\\nPortal Tab: [only if provided]\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Summary: {{ $json.summary }}\\nDescription: {{ $json.description }}\\nReporter: {{ $json.reporter }}\\nPriority: {{ $json.priority }}\\nImpact: {{ $json.impact }}\\nPortal Tab: {{ $json.portalTab }}\\n\\nCreate the bug report following the format above.\"\n    }\n  ], \n  \"stream\": false\n}",
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        736,
+        -544
+      ],
+      "id": "26ed8956-01cc-44d3-b793-c5a45cbe6341",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "http://host.docker.internal:11434/api/generate",
+        "height": 80,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        640,
+        -640
+      ],
+      "typeVersion": 1,
+      "id": "0903beb0-5619-40ae-b3a1-82ad85a09b11",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "model": "llama3.1:8b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        512,
+        -464
+      ],
+      "id": "17e75a19-ac1d-40b3-b6eb-b3d581949156",
+      "name": "Ollama Chat Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "f5MlqZg2mHCEeM3c",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1136,
+        -448
+      ],
+      "id": "6b405620-bdab-43b8-867a-3651af088a6e",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ny2D7JmVOGu5YgP7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.rawText }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are a bug report formatter. Convert user-submitted bug reports into a structured format. Follow these rules strictly:\n\n1. Convert first-person statements to third-person (e.g., \"I noticed\" becomes \"Some employees experienced\")\n2. Extract logical steps to replicate the issue from the description\n3. Define the actual result (what's happening - the bug)\n4. Define the expected result (what should happen correctly)\n5. Use plain text only, no markdown formatting\n6. Write naturally, avoid robotic or obviously AI-generated language\n7. Only include Impact and Portal Tab lines if they were provided in the input\n\nOutput must follow this exact format:\n\nTitle of the issue: [title]\n\nDescription:\n[third-person description]\n\nSteps to replicate:\n1. [step]\n2. [step]\n3. [step]\n4. [continue as needed]\n\nActual Result: [what's broken]\n\nExpected Result: [what should work]\n\nReporter: [name]\nImpact: [only if provided]\nPortal Tab: [only if provided]\n```\n\n**User Message (Prompt):**\n```\nSummary: {{ $json.summary }}\nDescription: {{ $json.description }}\nReporter: {{ $json.reporter }}\nPriority: {{ $json.priority }}\nImpact: {{ $json.impact }}\nPortal Tab: {{ $json.portalTab }}\n\nCreate the bug report following the format above."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        816,
+        16
+      ],
+      "id": "51031ac7-4b55-45cd-8741-d46552ffa03b",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "folderId": "default",
+        "title": "={{ $('Parse Slack Message').item.json.summary }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1184,
+        16
+      ],
+      "id": "85527cff-6784-4223-b27a-c8d48e6b559c",
+      "name": "Create Bug Report Document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "yEvfTihhKZnDLxdP",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09LQ7CRXU5",
+          "mode": "list",
+          "cachedResultName": "bug-reports-channel"
+        },
+        "text": "=Error!\nPlease file a proper issue.\n\n",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        864,
+        400
+      ],
+      "id": "0074f28d-4b77-442c-a8ac-6d2b0dab3b07",
+      "name": "Error hadle",
+      "webhookId": "df524a66-9957-4e71-9be2-58e69347d134",
+      "credentials": {
+        "slackApi": {
+          "id": "Azzdf6HFBha7JVX2",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "={{ $('Basic LLM Chain').item.json.text }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1408,
+        16
+      ],
+      "id": "62c0ecc3-9ab8-4408-aa2a-c5a06f6e1aea",
+      "name": "Update and append text",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "yEvfTihhKZnDLxdP",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09LQ7CRXU5",
+          "mode": "list",
+          "cachedResultName": "bug-reports-channel"
+        },
+        "text": "=Bug Report Created Successfully!\nTitle: {{ $('Parse Slack Message').item.json.summary }}\nReporter: {{ $('Parse Slack Message').item.json.reporter }}\nView Document: {{ $json.documentUrl }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1824,
+        16
+      ],
+      "id": "3b43362e-43e9-4381-a70d-4ca7e0693d40",
+      "name": "Send successful report ",
+      "webhookId": "abfbad05-4b95-45b7-9b43-b320a249b199",
+      "credentials": {
+        "slackApi": {
+          "id": "Azzdf6HFBha7JVX2",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the document ID from the previous node\nconst documentId = $input.first().json.documentId\n\n// Construct the full Google Docs URL\nconst documentUrl = `https://docs.google.com/document/d/${documentId}/edit`;\n\n// Pass through all data plus the URL\nreturn {\n  json: {\n    ...$input.first().json,\n    documentUrl: documentUrl,\n    documentId: documentId\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1616,
+        16
+      ],
+      "id": "cf0d145a-5806-47b3-857a-b43c60e17568",
+      "name": "Construct Document"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        896,
+        192
+      ],
+      "id": "6fa30604-4b80-47e8-ac15-b4c4a51930ab",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "CoYijjHXnD2irnpg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parse Slack Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Input": {
+      "main": [
+        [
+          {
+            "node": "GenerateModelPoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GenerateModelPoint": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Parse Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Slack Message": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error hadle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model1": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Create Bug Report Document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Bug Report Document": {
+      "main": [
+        [
+          {
+            "node": "Update and append text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update and append text": {
+      "main": [
+        [
+          {
+            "node": "Construct Document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construct Document": {
+      "main": [
+        [
+          {
+            "node": "Send successful report ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send successful report ": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b96440ff-c633-4491-af9c-09f0e3b182ab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad18c53f208294abbce3d42899d14c2ca274cf54c2abcddca4ee638896213157"
+  },
+  "id": "9z7TGEjKmeUduv4O",
+  "tags": []
+}

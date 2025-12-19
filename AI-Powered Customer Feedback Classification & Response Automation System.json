@@ -1,0 +1,835 @@
+{
+  "name": "AI-Powered Customer Feedback Classification & Response Automation System",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "feedback_ai",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "f152c81d-bdf3-42dd-96cc-dbf9fd8c074a",
+      "name": "Webhook",
+      "webhookId": "ee32b9d6-38a3-4c9f-8c13-099071aa7406"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=🍩 Full AI System Prompt for Donut Feedback Automation\n\nSYSTEM / INSTRUCTION PROMPT:\n\nYou are an AI assistant that manages and responds to customer feedback for a donut business called SweetCircle Donuts.\nYour primary goal is to provide thoughtful, professional, and brand-friendly responses to every feedback submission.\n\n🎯 Your Responsibilities:\n\nAnalyze each feedback message and classify it into one of the following categories:\n\nPositive Feedback: Customer expresses satisfaction or happiness.\n\nNegative Feedback: Customer expresses dissatisfaction or frustration.\n\nRecommendation / Suggestion: Customer gives advice or new ideas.\n\nUnrelated Feedback: Message not related to the donut business (e.g., about tech, cars, random topics).\n\nGenerate a short and warm thank-you response that fits the detected category.\n\n🧠 Response Rules:\n\nIf Positive:\n\nExpress genuine gratitude and happiness.\n\nReflect the joy and warmth of your donut brand.\n\nExample tone: cheerful, appreciative, lighthearted.\nExample Response:\n\nThank you so much for your kind words! 🍩 We’re thrilled that you loved our donuts — your happiness makes our day sweeter!\n\nIf Negative:\n\nStay calm, polite, and professional.\n\nAcknowledge the concern, apologize, and promise improvement.\n\nNever argue or blame.\nExample Response:\n\nWe’re really sorry to hear about your experience. We value your feedback and will make sure to improve. Thank you for helping us get better every day.\n\nIf Recommendation:\n\nAppreciate the suggestion and show interest in trying it.\n\nMake the customer feel heard and valued.\nExample Response:\n\nThat’s a great suggestion! Thank you for sharing your idea — we’ll definitely consider it for our menu. Your input helps us make SweetCircle even better!\n\nIf Unrelated:\n\nStay polite and professional, but clarify that it’s outside business scope.\nExample Response:\n\nThank you for reaching out! It seems your message isn’t related to our donut products. If you have feedback about our donuts or store experience, we’d love to hear it!\n\n\nAdditional Guidelines:\n\nKeep every response under 60 words.\n\nAlways maintain a friendly, brand-aligned tone (warm, kind, and professional).\n\nNever repeat the customer’s entire feedback in your reply.\n\nNever include technical or unrelated information.\n\nUse emojis occasionally (1–2 max) to reflect friendliness.\n\n\nOutput Format (for n8n or Webhook Response):\n\nReturn the following JSON:\n\n{\n  \"category\": \"Positive | Negative | Recommendation | Unrelated\",\n  \"reply\": \"Your generated professional response here.\"\n}\n\n\nFeedback Message: {{ $('Webhook').item.json.body.message }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        0
+      ],
+      "id": "21d4f64e-f9ab-4222-9b34-35955271420d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Webhook').item.json.body.email }}",
+        "subject": "Thank you for the Feedback!",
+        "emailType": "text",
+        "message": "=Hi {{ $('Webhook').item.json.body.name }},\n\n{{ $('Code').item.json.reply }}\n\nBest Regards,\n{{ $('Edit Fields').item.json.Company }}\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1968,
+        -16
+      ],
+      "id": "d628df10-e5ac-41dc-af2e-b5dd27760f85",
+      "name": "Send a message",
+      "webhookId": "56ce2080-fe3a-4c0e-834c-795ebc79d025",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vu840peuiHptxeNc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "034212f7-4120-4a07-b344-c7029c4b0d2e",
+              "name": "Company",
+              "value": "JRAF Donuts",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        448,
+        0
+      ],
+      "id": "6a2c7d3f-9ebd-468d-b222-98230a99113e",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the input string from previous node\nconst input = $json.output;\n\n// Use a more flexible regex to capture the JSON-like part\nconst match = input.match(/\\{[\\s\\S]*?\\}/);\n\nlet parsed = {};\n\nif (match) {\n  try {\n    // Try to fix any missing quotes around the reply value if needed\n    let jsonString = match[0]\n      .replace(/\\n/g, \" \")               // Remove line breaks\n      .replace(/\\s+/g, \" \")              // Clean up spaces\n      .replace(/,\\s*}/, \"}\");            // Clean up trailing commas\n\n    // Add quotes around reply text if missing\n    if (!jsonString.includes('\"reply\": \"')) {\n      jsonString = jsonString.replace(\n        /\"reply\":\\s([^}]+)}/,\n        (_, replyText) => `\"reply\": \"${replyText.trim().replace(/\"/g, '\\\\\"')}\"}`\n      );\n    }\n\n    parsed = JSON.parse(jsonString);\n  } catch (error) {\n    parsed = {\n      category: \"Unrelated\",\n      reply: \"We appreciate your feedback! Could you please provide more details about your experience with our donut shop?\"\n    };\n  }\n} else {\n  parsed = {\n    category: \"Unrelated\",\n    reply: \"We appreciate your feedback! Could you please provide more details about your experience with our donut shop?\"\n  };\n}\n\n// Return in clean format\nreturn [\n  {\n    json: {\n      category: parsed.category || \"Unrelated\",\n      reply: parsed.reply || \"We appreciate your feedback!\"\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "438d647e-adbe-4b33-95a8-49f1a8ea0dae",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Code').item.json.category }}",
+                    "rightValue": "Positive",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e55ee4c4-0dae-4eb7-ac8b-86e908bab349"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9fff2b3e-8ba7-4b9b-92eb-655362a0bcd0",
+                    "leftValue": "={{ $('Code').item.json.category }}",
+                    "rightValue": "Negative",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e926d209-9e97-46fd-849c-65d951466507",
+                    "leftValue": "={{ $('Code').item.json.category }}",
+                    "rightValue": "Recommendation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "dd04634c-674b-4d37-92db-f93e7b51499b",
+                    "leftValue": "={{ $('Code').item.json.category }}",
+                    "rightValue": "Unrelated",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1408,
+        -32
+      ],
+      "id": "f552d6af-99e7-42e2-9227-4c37d118653a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 665258384,
+          "mode": "list",
+          "cachedResultName": "Good Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit#gid=665258384"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Feedback": "={{ $json[\"Customer Feedback\"] }}",
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Feedback",
+              "displayName": "Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        -256
+      ],
+      "id": "f88bb5e0-477a-4e79-b2b7-3cb76f06c185",
+      "name": "Route Positive Feedback",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 293425794,
+          "mode": "list",
+          "cachedResultName": "Negative Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit#gid=293425794"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Feedback": "={{ $json[\"Customer Feedback\"] }}",
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Feedback",
+              "displayName": "Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        -96
+      ],
+      "id": "08633a73-44b0-4e58-a9bc-3b1c501989eb",
+      "name": "Route Negative Feedback",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 771830979,
+          "mode": "list",
+          "cachedResultName": "Recommendation",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit#gid=771830979"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}",
+            "Customer Feedback": "={{ $json[\"Customer Feedback\"] }}",
+            "System Feedback": "={{ $json[\"System Feedback\"] }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Feedback",
+              "displayName": "Customer Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "System Feedback",
+              "displayName": "System Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        80
+      ],
+      "id": "11287d65-2f21-42d8-8f0c-baf602741346",
+      "name": "Route Recommendation Feedback",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 887937041,
+          "mode": "list",
+          "cachedResultName": "Unrelated",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit#gid=887937041"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Email": "={{ $json.Email }}",
+            "Customer Feedback": "={{ $json[\"Customer Feedback\"] }}",
+            "System Feedback": "={{ $json[\"System Feedback\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Customer Feedback",
+              "displayName": "Customer Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "System Feedback",
+              "displayName": "System Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1664,
+        256
+      ],
+      "id": "3e62a0a1-103d-44c0-a7cf-6c5b67ebf2d3",
+      "name": "Route Unrelated Feedback",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4",
+          "mode": "list",
+          "cachedResultName": "Customer Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "All Feedback",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_2EiDcizFpFexxwc41IhcNrQVD6WDsSdEYnkWqZHAP4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Webhook').item.json.body.name }}",
+            "Email": "={{ $('Webhook').item.json.body.email }}",
+            "Customer Feedback": "={{ $('Webhook').item.json.body.message }}",
+            "System Feedback": "={{ $json.reply }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer Feedback",
+              "displayName": "Customer Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "System Feedback",
+              "displayName": "System Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "394c538c-366c-4a97-bffc-d541cf4f97e3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        224
+      ],
+      "id": "27300359-a7b9-46e7-a1a8-1e2a465e0637",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ny2D7JmVOGu5YgP7",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "llama3.2:3b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        544,
+        208
+      ],
+      "id": "1202b880-697f-415e-8b37-171e71ad1a71",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "f5MlqZg2mHCEeM3c",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Route Positive Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route Negative Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route Recommendation Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Route Unrelated Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Positive Feedback": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Negative Feedback": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Recommendation Feedback": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Unrelated Feedback": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1316a978-4f71-4598-a00f-d0fa60a434bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad18c53f208294abbce3d42899d14c2ca274cf54c2abcddca4ee638896213157"
+  },
+  "id": "bCNJsyyw6khy5gwz",
+  "tags": []
+}

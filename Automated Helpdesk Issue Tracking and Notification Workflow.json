@@ -1,0 +1,579 @@
+{
+  "name": "Automated Helpdesk Issue Tracking and Notification Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const row = item.json;\n  return {\n    json: {\n      key: row.Key,\n      previousStatus: \"Work In Progress\",\n      timestamp: new Date().toLocaleString(\"en-PH\", {\n        timeZone: \"Asia/Manila\"\n      }),\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -416
+      ],
+      "id": "c0d2f9b4-a9b4-43e5-b0fb-37f0fc247880",
+      "name": "Completed Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const row = item.json;\n  return {\n    json: {\n      key: row.Key,\n      previousStatus: \"Open\",\n      timestamp: new Date().toLocaleString(\"en-PH\", {\n        timeZone: \"Asia/Manila\"\n      }),\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -288
+      ],
+      "id": "cc3aa741-4ab5-42e7-bad2-9e8e029c31fe",
+      "name": "Work In Progress Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const row = item.json;\n  return {\n    json: {\n      key: row.Key,\n      previousStatus: \"Work In Progress\",\n      timestamp: new Date().toLocaleString(\"en-PH\", {\n        timeZone: \"Asia/Manila\"\n      }),\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -160
+      ],
+      "id": "5cfb57d9-f110-4996-9289-aaeb54e878db",
+      "name": "Canceled Code"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all().map(item => {\n  const row = item.json;\n  return {\n    json: {\n      key: row.Key,\n      previousStatus: \"Work In Progress\",\n      timestamp: new Date().toLocaleString(\"en-PH\", {\n        timeZone: \"Asia/Manila\"\n      }),\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -32
+      ],
+      "id": "2124bb37-bc6d-4d85-b110-6cb70d674061",
+      "name": "Closed Code"
+    },
+    {
+      "parameters": {
+        "sendTo": "gamingjraf@gmail.com",
+        "subject": "Duplicate Issue",
+        "message": "=<h3>Duplicate Issue: {{ $json.key }}</h3>\n<ul>\n  <li><strong>Summary:</strong> {{ $json.message }}</li>\n  <li><strong>Helpdesk Tracker Link: </strong> https://docs.google.com/spreadsheets/d/1y9EIpIaOG-B1R9u0a53S2ajCogWNukY2O0Mi76PVLCQ/edit?gid=0#gid=0</li>\n</ul>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        -832
+      ],
+      "id": "f5a80c66-14f0-4083-b2e1-63a28e4fb15f",
+      "name": "Send Duplicate Notif",
+      "webhookId": "4c33255d-0ad5-4450-95cf-5fccca868db3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vu840peuiHptxeNc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const lastItem = items.at(-1);\n\nreturn [lastItem];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -592
+      ],
+      "id": "d46305ed-4bba-4996-8356-e661890c947e",
+      "name": "Return Last Data"
+    },
+    {
+      "parameters": {
+        "sendTo": "gamingjraf@gmail.com",
+        "subject": "=New Issue - {{ $json.Key }}",
+        "message": "=<h3>Issue Appended to the Tracker: {{ $json.Key }}</h3>\n<ul>\n  <li><strong>Summary:</strong> {{ $json.Summary }}</li>\n  <li><strong>Reporter:</strong> {{ $json.Reporter }}</li>\n  <li><strong>Status:</strong> {{ $json.Status }}</li>\n  <li><strong>Helpdesk Tracker Link: </strong> https://docs.google.com/spreadsheets/d/1y9EIpIaOG-B1R9u0a53S2ajCogWNukY2O0Mi76PVLCQ/edit?gid=0#gid=0</li>\n</ul>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        896,
+        -592
+      ],
+      "id": "61e933db-c727-4511-b8b2-22bc2ce243b3",
+      "name": "Send New Issue Message",
+      "webhookId": "543588b9-0542-4815-9738-1c528864dc5c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vu840peuiHptxeNc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2fb95533-c121-4691-8883-c83c1d4940b3",
+              "leftValue": "={{ $json.duplicate }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        -704
+      ],
+      "id": "5bebc37d-9418-4393-b9ec-14ab6b45b618",
+      "name": "Route based of Duplicate or Not"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Completed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "e5f7b410-b867-4664-a164-f0621a6ae5b3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5852c071-da2f-4a15-8436-bdad8083b741",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Work In Progress",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "037e1f63-9231-4ee3-b6cb-75a94b54c33a",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Canceled",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f079b836-34ce-40e1-b096-d2f845561731",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Closed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        272,
+        -240
+      ],
+      "id": "b8c8a99f-f5e8-4d06-82b2-d6f4c087c159",
+      "name": "Route base on Status"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw",
+          "mode": "list",
+          "cachedResultName": "Demo Help",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit#gid=0"
+        },
+        "event": "rowUpdate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -208
+      ],
+      "id": "0649f541-6d99-4940-9c69-1935d923a3e8",
+      "name": "Receive if data is Updated",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "ibqQWh3JcxrE0U27",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "gamingjraf@gmail.com",
+        "subject": "Status Update",
+        "message": "=<h2>Status Update Notification</h2>\n<p>A task has been completed:</p>\n<ul>\n  <li><strong>Key:</strong> {{ $json.key }}</li>\n  <li><strong>Summarry:</strong> {{ $('Receive if data is Updated').all()[$itemIndex].json.Summary }}</li>\n  <li><strong>Previous Status:</strong> {{ $json.previousStatus }}</li>\n  <li><strong>New Status:</strong> {{ $('Receive if data is Updated').all()[$itemIndex].json.Status }}</li>\n  <li><strong>Updated:</strong> {{ $json.timestamp }}</li>\n</ul>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        -224
+      ],
+      "id": "f4148bb8-c94b-4bf9-8162-c73406d8f34c",
+      "name": "Send status update notif ",
+      "webhookId": "c723eb19-4033-4464-af1b-c6a608413123",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "vu840peuiHptxeNc",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw",
+          "mode": "list",
+          "cachedResultName": "Demo Help",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -704
+      ],
+      "id": "6e5300ef-e31f-4caa-802b-8ac712515ff1",
+      "name": "Receive new issue added to the sheets",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "ibqQWh3JcxrE0U27",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// items = array of rows from Google Sheets Trigger\n\nconst duplicates = [];\nconst uniqueMap = {};\nconst uniqueItems = [];\n\nfor (const row of items) {\n    // Normalize the key (remove spaces, line breaks, case normalize)\n    const rawKey = row.json.Key || \"\";\n    const key = rawKey.toString().trim().toUpperCase();\n\n    if (uniqueMap[key]) {\n        duplicates.push(row);\n    } else {\n        uniqueMap[key] = true;\n        uniqueItems.push(row);\n    }\n}\n\n// If duplicates found → send only one flag forward\nif (duplicates.length > 0) {\n    return [\n        {\n            json: {\n                duplicate: true,\n                duplicateCount: duplicates.length,\n                key: duplicates[0].json.Key,\n                message: \"Duplicate Key detected inside the helpdesk tracker\"\n            }\n        }\n    ];\n}\n\nreturn uniqueItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        -704
+      ],
+      "id": "aa308356-62a2-447d-858a-2bc13dd72958",
+      "name": "Checking if the issue is duplicate"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw",
+          "mode": "list",
+          "cachedResultName": "Demo Help",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1hOsr_OYEB0Jui1aZN5gt548eoQJEE9DGVIfRyhUEnXw/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        -704
+      ],
+      "id": "90ee4911-0c5e-4b1f-8193-eb605e8e1025",
+      "name": "Read all data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "0kld52V6iypxaffz",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Completed Code": {
+      "main": [
+        [
+          {
+            "node": "Send status update notif ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Work In Progress Code": {
+      "main": [
+        [
+          {
+            "node": "Send status update notif ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Canceled Code": {
+      "main": [
+        [
+          {
+            "node": "Send status update notif ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return Last Data": {
+      "main": [
+        [
+          {
+            "node": "Send New Issue Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route based of Duplicate or Not": {
+      "main": [
+        [
+          {
+            "node": "Send Duplicate Notif",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Last Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Closed Code": {
+      "main": [
+        [
+          {
+            "node": "Send status update notif ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route base on Status": {
+      "main": [
+        [
+          {
+            "node": "Completed Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Work In Progress Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Canceled Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Closed Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive if data is Updated": {
+      "main": [
+        [
+          {
+            "node": "Route base on Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive new issue added to the sheets": {
+      "main": [
+        [
+          {
+            "node": "Read all data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking if the issue is duplicate": {
+      "main": [
+        [
+          {
+            "node": "Route based of Duplicate or Not",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read all data": {
+      "main": [
+        [
+          {
+            "node": "Checking if the issue is duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Manila",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d05f6c4e-54f4-4425-97a9-3b5750f16bba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad18c53f208294abbce3d42899d14c2ca274cf54c2abcddca4ee638896213157"
+  },
+  "id": "2kPXuCP8BpBdo3s5",
+  "tags": []
+}

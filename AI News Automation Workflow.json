@@ -1,0 +1,230 @@
+{
+  "name": "AI News Automation Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        0
+      ],
+      "id": "b0cdf980-445f-4e13-92c7-ceb53cfc677b",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.urls }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        976,
+        128
+      ],
+      "id": "8c734458-030a-4e6f-a848-287d301ec120",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dc12a3f0-3f67-401b-b09c-121f10668b63",
+              "name": "urls",
+              "value": "[\n\"https://www.technologyreview.com/c/artificial-intelligence/feed/\",\n\"https://techcrunch.com/category/artificial-intelligence/feed/\",\n\"https://www.wired.com/feed/tag/ai/latest/rss\",\n\"https://venturebeat.com/category/ai/feed/\"\n]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        0
+      ],
+      "id": "f043cd6c-7dc7-4a43-ab91-c00c3355e184",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "urls",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        528,
+        0
+      ],
+      "id": "116ec781-7285-4e2e-9f41-764d194cd14a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "batchSize": "=4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        752,
+        0
+      ],
+      "id": "080c3c73-466f-4de2-8ca6-a2ecc09289f2",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        976,
+        -144
+      ],
+      "id": "a51ab1ef-5ad4-4387-b8fc-9ba00b249493",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = items.map(item => item.json);\n\nif (allItems.length === 0) {\n  return [];\n}\n\nallItems.sort((a, b) => {\n  const dateA = new Date(a.isoDate || a.pubDate);\n  const dateB = new Date(b.isoDate || b.pubDate);\n  return dateB - dateA;\n});\n\nconst latestNews = allItems[0];\n\nreturn [\n  {\n    json: latestNews\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        128
+      ],
+      "id": "d34a9d0e-7bca-4105-8d81-7dab889fdfb2",
+      "name": "Get latest news"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09EGABJYG0",
+          "mode": "list",
+          "cachedResultName": "all-it"
+        },
+        "text": "=Title: {{ $json.title }}\n\nContent: {{ $json.content }}\n\nCreator: {{ $json.creator }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1408,
+        128
+      ],
+      "id": "f7f55d26-5633-4d4f-a452-f8afc1df1ea5",
+      "name": "Send a message",
+      "webhookId": "d63d2fcc-832e-4213-bf3b-7a2e17759416",
+      "credentials": {
+        "slackApi": {
+          "id": "Azzdf6HFBha7JVX2",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Get latest news",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get latest news": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "60c39ee6-2559-4ac8-9cfd-7cece38e535b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ad18c53f208294abbce3d42899d14c2ca274cf54c2abcddca4ee638896213157"
+  },
+  "id": "COAJyWucgA68bEbD",
+  "tags": []
+}
