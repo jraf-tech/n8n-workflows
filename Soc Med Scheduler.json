@@ -1,0 +1,731 @@
+{
+  "name": "Soc Med Scheduler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1488,
+        272
+      ],
+      "id": "1182a0c1-562b-47ce-b6b4-c9d9b632b549",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        416
+      ],
+      "id": "97e60009-f0d5-433e-b1eb-5ce3787490db",
+      "name": "Run every 5 Min"
+    },
+    {
+      "parameters": {
+        "chatId": "-1003505689925",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1488,
+        -32
+      ],
+      "id": "65a2f74d-9aaa-424a-b1a1-a66d02b34692",
+      "name": "Sending message",
+      "webhookId": "31f0be23-b7a4-45ad-9d68-bbc22a0d83e4",
+      "credentials": {
+        "telegramApi": {
+          "id": "ZoNGjH8lKDx9IiPw",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "6dd2cb52-9443-4b2a-9530-0c69f13d4bc1",
+              "leftValue": "={{ $json.formatted_date_number }}",
+              "rightValue": "={{ $json.current_date_number }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "20f23e5c-3fe3-466d-b894-074c9fcd7014",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1264,
+        128
+      ],
+      "id": "f0344a59-fd45-4da1-af38-50590b79195a",
+      "name": "Route if items > ",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "resource": "base",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -464,
+        416
+      ],
+      "id": "277101dc-584e-46c0-b7b9-1c0f0577951f",
+      "name": "Get many bases",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "kNpTbg9ru1jeBchc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "base",
+        "operation": "getSchema",
+        "base": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -256,
+        416
+      ],
+      "id": "0ea319d1-68b3-4d0e-b8a3-de097816ad11",
+      "name": "Get base schema",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "kNpTbg9ru1jeBchc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.airtable.com/v0/{{ $json.base_id }}/{{ $json.table_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        384,
+        272
+      ],
+      "id": "d03da6e0-9eb6-4e9d-9551-26278b689290",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "e5ad6184-96c2-480d-a143-9e278ee233a4",
+              "leftValue": "={{ $json.base_name }}",
+              "rightValue": "ngalan sa db",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        112,
+        416
+      ],
+      "id": "84a41b02-5a7d-40e7-9b38-618a7b288cd5",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        352,
+        528
+      ],
+      "id": "35d9caf6-0659-44af-b0bb-489cde485bfd",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "records",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        592,
+        272
+      ],
+      "id": "5d634dee-c4c2-4139-99b0-df35a3d1d4f7",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appflDqhE5DLQiO4q",
+          "mode": "list",
+          "cachedResultName": "ngalan sa db",
+          "cachedResultUrl": "https://airtable.com/appflDqhE5DLQiO4q"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblCo70YJAGAhyp26",
+          "mode": "list",
+          "cachedResultName": "Table sa db",
+          "cachedResultUrl": "https://airtable.com/appflDqhE5DLQiO4q/tblCo70YJAGAhyp26"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Message": "={{ $json.message }}",
+            "Status": "Posted",
+            "ID": "={{ $json.ID }}"
+          },
+          "matchingColumns": [
+            "ID"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "ID",
+              "displayName": "ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Scheduled Date & Time",
+              "displayName": "Scheduled Date & Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Ready",
+                  "value": "Ready"
+                },
+                {
+                  "name": "Posted",
+                  "value": "Posted"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date & Time Posted",
+              "displayName": "Date & Time Posted",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Message ID",
+              "displayName": "Message ID",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1952,
+        -32
+      ],
+      "id": "1fdc16f9-d185-4549-a3c1-b3989edd05a1",
+      "name": "Update record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "kNpTbg9ru1jeBchc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0cf73beb-29a6-492f-bae8-920077993d96",
+              "name": "ID",
+              "value": "={{ $('Route if items > ').item.json.ID }}",
+              "type": "number"
+            },
+            {
+              "id": "b879fe6c-d175-4250-8b92-7631f13ecd25",
+              "name": "Message",
+              "value": "={{ $('Route if items > ').item.json.message }}",
+              "type": "string"
+            },
+            {
+              "id": "63e367c9-e97f-4e71-b221-84ec07b84f67",
+              "name": "Status",
+              "value": "={{ $('Route if items > ').item.json.Status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1696,
+        -32
+      ],
+      "id": "52c953d6-5e53-435a-8b3f-c359016e1ff1",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f93977f-4b86-4cc8-95c2-317c84678abe",
+              "name": "table_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "bf15d656-9c39-4897-9458-316ad3830f44",
+              "name": "base_id",
+              "value": "={{ $('Get many bases').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "4080b767-b88b-4297-a2c9-449347bf7268",
+              "name": "base_name",
+              "value": "={{ $('Get many bases').item.json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        416
+      ],
+      "id": "fa780f2a-e273-40ca-be54-453aaa3294c0",
+      "name": "set_tblID & base"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eeead63f-a683-40b5-bb75-5cf0f2033c4e",
+              "name": "formatted_date_number",
+              "value": "={{ DateTime.fromISO($json.fields[\"Scheduled Date & Time\"]).toMillis() }}",
+              "type": "number"
+            },
+            {
+              "id": "477d6dfb-7d6a-453c-8ece-f1b3165a126a",
+              "name": "=current_date_number",
+              "value": "={{ DateTime.now().toMillis() }}",
+              "type": "number"
+            },
+            {
+              "id": "e51abb78-a890-4faf-a52f-e3a79703079a",
+              "name": "ID",
+              "value": "={{ $json.fields.ID }}",
+              "type": "number"
+            },
+            {
+              "id": "cb06d6e8-daba-4b03-8088-109211ed911b",
+              "name": "message",
+              "value": "={{ $json.fields.Message }}",
+              "type": "string"
+            },
+            {
+              "id": "0ca168b8-2075-47ce-a88f-856565f5a188",
+              "name": "=Status",
+              "value": "={{ $json.fields.Status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        128
+      ],
+      "id": "85aa340a-af08-49e8-bcec-bf992f25dbd5",
+      "name": "convertDate to Millis",
+      "alwaysOutputData": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b5f63866-7145-4b0b-88e6-ba9158ad791d",
+              "leftValue": "={{$json.fields.Message}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "ccae30c7-bf0c-46be-8bdd-cf0a8fd94260",
+              "leftValue": "={{$json.fields[\"Scheduled Date & Time\"]}}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        800,
+        272
+      ],
+      "id": "feec137b-c68a-44be-9e06-0177a9c3e4ca",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRecord",
+        "base": {
+          "__rl": true,
+          "value": "appflDqhE5DLQiO4q",
+          "mode": "list",
+          "cachedResultName": "ngalan sa db",
+          "cachedResultUrl": "https://airtable.com/appflDqhE5DLQiO4q"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblCo70YJAGAhyp26",
+          "mode": "list",
+          "cachedResultName": "Table sa db",
+          "cachedResultUrl": "https://airtable.com/appflDqhE5DLQiO4q/tblCo70YJAGAhyp26"
+        },
+        "id": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1056,
+        384
+      ],
+      "id": "88976565-864f-48c8-8b31-896e33ef0548",
+      "name": "Delete a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "kNpTbg9ru1jeBchc",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Run every 5 Min": {
+      "main": [
+        [
+          {
+            "node": "Get many bases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sending message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route if items > ": {
+      "main": [
+        [
+          {
+            "node": "Sending message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many bases": {
+      "main": [
+        [
+          {
+            "node": "Get base schema",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get base schema": {
+      "main": [
+        [
+          {
+            "node": "set_tblID & base",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Update record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set_tblID & base": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "convertDate to Millis": {
+      "main": [
+        [
+          {
+            "node": "Route if items > ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "convertDate to Millis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "b68d5e98-6a37-404b-92ef-b94212a4a468",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "01bd4620b4649c903b620903e464601563d7a6be3b8651e5ba2fc40ace6f1e2c"
+  },
+  "id": "7xlIH3fGkgrY277L",
+  "tags": []
+}
