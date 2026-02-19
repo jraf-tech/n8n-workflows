@@ -151,7 +151,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer "
+              "value": "Bearer " // Put your Air Table API Key here
             }
           ]
         },
